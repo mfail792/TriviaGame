@@ -7,7 +7,7 @@ $('#start').on('click', function () {
     game.start();
 })
 
-//wrapping all questions and answers into one object, various methods
+//wrapping all questions and answers into one object
 var questions = [{
     question: "What year did the Twins last win the World Series?",
     guesses: ["1932", "1965", "1971", "1986", "1991"],
@@ -36,11 +36,11 @@ var questions = [{
 }];
 
 
-//display page showing
+//declaring game object and counters for storing, timer value and message to be displayed on timeout
 var game = {
     correct: 0,
     incorrect: 0,
-    counter: 30,
+    counter: 15,
     countdown: function () {
         game.counter--;
         $('#counter').html(game.counter);
@@ -53,7 +53,7 @@ var game = {
     //runs timer to countdown from 30 and display to page
     start: function () {
         timer = setInterval(game.countdown, 1000);
-        $('#main2').prepend('<h2>Time Remaining: <span id="counter">30</span> Seconds</h2>');
+        $('#main2').prepend('<h2>Time Remaining: <span id="counter">15</span> Seconds</h2>');
         $('#start').remove();
         for (var i = 0; i < questions.length; i++) {
             $('#main2').append('<h2>' + questions[i].question + '</h2');
@@ -65,7 +65,7 @@ var game = {
     },
     //check chosen answer against rightAnswer and add to counter totals accordingly
     done: function () {
-        $.each($('input[name="question-0]":checked'), function () {
+        $.each($("input[name='question-0']:checked"), function () {
             if ($(this).val() == questions[0].rightAnswer) {
                 game.correct++;
             }
@@ -76,7 +76,7 @@ var game = {
 
         })
 
-        $.each($('input[name="question-1]":checked'), function () {
+        $.each($("input[name='question-1']:checked"), function () {
             if ($(this).val() == questions[1].rightAnswer) {
                 game.correct++;
             }
@@ -86,7 +86,7 @@ var game = {
             }
 
         })
-        $.each($('input[name="question-2]":checked'), function () {
+        $.each($("input[name='question-2']:checked"), function () {
             if ($(this).val() == questions[2].rightAnswer) {
                 game.correct++;
             }
@@ -96,7 +96,7 @@ var game = {
             }
 
         })
-        $.each($('input[name="question-3]":checked'), function () {
+        $.each($("input[name='question-3']:checked"), function () {
             if ($(this).val() == questions[3].rightAnswer) {
                 game.correct++;
             }
@@ -106,6 +106,20 @@ var game = {
             }
 
         })
-    }
+        //making results page
+        this.result();
+    },
+        result: function() {
+            clearInterval(timer);
+            $('#main2').remove();
+            //showing how many correct/incorrect answers user guessed/didn't guess, and posting to page
+            $('#main2').html("<h2>All done!</h2>");
+            $('#main2').append("<h3>Correct Answers: "+this.correct+"</h3>");
+            $('#main2').append("<h3>Incorrect Answers: "+this.incorrect+"</h3>");
+            $('#main2').append("<h3>Unanswered: "+(questions.length-(this.incorrect+this.correct))+"</h3>");
+        }
+
 }
+
+
 
