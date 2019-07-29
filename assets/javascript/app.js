@@ -4,18 +4,10 @@
 
 //appending correct values to answers and corresponding questions
 $('#start').on('click', function () {
-    $('#start').remove();
-
-    for (var i = 0; i < questions.length; i++) {
-        $('#main2').append('<h2>' + questions[i].question + '</h2');
-
-        for (var j = 0; j < questions[i].guesses.length; j++) {
-            $('#main2').append("<input type='radio' name='question-" + i + "' value='" + questions[i].guesses[j] + "'>" + questions[i].guesses[j])
-        }
-    }
+    game.start();
 })
 
-//wrapping all questions and answers into one object
+//wrapping all questions and answers into one object, various methods
 var questions = [{
     question: "What year did the Twins last win the World Series?",
     guesses: ["1932", "1965", "1971", "1986", "1991"],
@@ -32,13 +24,88 @@ var questions = [{
     rightAnswer: "Titanic"
 }, {
 
-    question: "How much style do you really have if you drive a Mini-Van",
-    guesses: ["Some", "Little", "Non-Existent", "Mad Style", "I'm late for soccer"],
-    rightAnswer: "I'm late for soccer"
+    question: "Who is the only person that can prevent forest fires?",
+    guesses: ["You", "Him", "Her", "The Bear",],
+    rightAnswer: "You"
 
 }, {
 
     question: "Gary Busey has a black belt in Jujitsu",
     guesses: ["True", "False",],
     rightAnswer: "True"
-}]
+}];
+
+
+//display page showing
+var game = {
+    correct: 0,
+    incorrect: 0,
+    counter: 30,
+    countdown: function () {
+        game.counter--;
+        $('#counter').html(game.counter);
+        if (game.counter <= 0) {
+            console.log("Time has expired");
+            results.done();
+        }
+    },
+
+    //runs timer to countdown from 30 and display to page
+    start: function () {
+        timer = setInterval(game.countdown, 1000);
+        $('#main2').prepend('<h2>Time Remaining: <span id="counter">30</span> Seconds</h2>');
+        $('#start').remove();
+        for (var i = 0; i < questions.length; i++) {
+            $('#main2').append('<h2>' + questions[i].question + '</h2');
+
+            for (var j = 0; j < questions[i].guesses.length; j++) {
+                $('#main2').append("<input type='radio' name='question-" + i + "' value='" + questions[i].guesses[j] + "'>" + questions[i].guesses[j]);
+            }
+        }
+    },
+    //check chosen answer against rightAnswer and add to counter totals accordingly
+    done: function () {
+        $.each($('input[name="question-0]":checked'), function () {
+            if ($(this).val() == questions[0].rightAnswer) {
+                game.correct++;
+            }
+            else {
+                game.incorrect++;
+
+            }
+
+        })
+
+        $.each($('input[name="question-1]":checked'), function () {
+            if ($(this).val() == questions[1].rightAnswer) {
+                game.correct++;
+            }
+            else {
+                game.incorrect++;
+
+            }
+
+        })
+        $.each($('input[name="question-2]":checked'), function () {
+            if ($(this).val() == questions[2].rightAnswer) {
+                game.correct++;
+            }
+            else {
+                game.incorrect++;
+
+            }
+
+        })
+        $.each($('input[name="question-3]":checked'), function () {
+            if ($(this).val() == questions[3].rightAnswer) {
+                game.correct++;
+            }
+            else {
+                game.incorrect++;
+
+            }
+
+        })
+    }
+}
+
