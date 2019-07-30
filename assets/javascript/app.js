@@ -1,5 +1,6 @@
 //need questions and answers stored in variables/arrays
 //need right answer defined
+//BUGS: results page not loading on timer reaching zero
 
 
 //appending correct values to answers and corresponding questions
@@ -36,7 +37,7 @@ var questions = [{
 }];
 
 
-//declaring game object and counters for storing, timer value and message to be displayed on timeout
+//declaring game object and counters for storing, timer value and answers to be displayed on timeout
 var game = {
     correct: 0,
     incorrect: 0,
@@ -46,7 +47,7 @@ var game = {
         $('#counter').html(game.counter);
         if (game.counter <= 0) {
             console.log("Time has expired");
-            results.done();
+           game.done();
         }
     },
 
@@ -56,12 +57,13 @@ var game = {
         $('#main2').prepend('<h2>Time Remaining: <span id="counter">15</span> Seconds</h2>');
         $('#start').remove();
         for (var i = 0; i < questions.length; i++) {
-            $('#main2').append('<h2>' + questions[i].question + '</h2');
+            $('#main2').append('<h2>' + questions[i].question + '</h2>');
 
             for (var j = 0; j < questions[i].guesses.length; j++) {
                 $('#main2').append("<input type='radio' name='question-" + i + "' value='" + questions[i].guesses[j] + "'>" + questions[i].guesses[j]);
             }
         }
+        $('#main2').append('<button id="end">DONE</button>');
     },
     //check chosen answer against rightAnswer and add to counter totals accordingly
     done: function () {
@@ -74,7 +76,7 @@ var game = {
 
             }
 
-        })
+        });
 
         $.each($("input[name='question-1']:checked"), function () {
             if ($(this).val() == questions[1].rightAnswer) {
@@ -85,7 +87,7 @@ var game = {
 
             }
 
-        })
+        });
         $.each($("input[name='question-2']:checked"), function () {
             if ($(this).val() == questions[2].rightAnswer) {
                 game.correct++;
@@ -95,7 +97,7 @@ var game = {
 
             }
 
-        })
+        });
         $.each($("input[name='question-3']:checked"), function () {
             if ($(this).val() == questions[3].rightAnswer) {
                 game.correct++;
@@ -105,19 +107,20 @@ var game = {
 
             }
 
-        })
+        });
         //making results page
         this.result();
     },
-        result: function() {
-            clearInterval(timer);
-            $('#main2').remove();
-            //showing how many correct/incorrect answers user guessed/didn't guess, and posting to page
-            $('#main2').html("<h2>All done!</h2>");
-            $('#main2').append("<h3>Correct Answers: "+this.correct+"</h3>");
-            $('#main2').append("<h3>Incorrect Answers: "+this.incorrect+"</h3>");
-            $('#main2').append("<h3>Unanswered: "+(questions.length-(this.incorrect+this.correct))+"</h3>");
-        }
+
+    result: function () {
+        clearInterval(timer);
+        $('#main2 h2').remove();
+        //showing how many correct/incorrect answers user guessed/didn't guess, and posting to page
+        $('#main2').html("<h2>All done!</h2>");
+        $('#main2').append("<h3>Correct Answers: " + this.correct + "</h3>");
+        $('#main2').append("<h3>Incorrect Answers: " + this.incorrect + "</h3>");
+        $('#main2').append("<h3>Unanswered: " + (questions.length - (this.incorrect + this.correct)) + "</h3>");
+    }
 
 }
 
