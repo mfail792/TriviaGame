@@ -1,4 +1,29 @@
 body {
     width: 960px;
+    text-align: center;
     background-image: url("https://www.toptal.com/designers/subtlepatterns/patterns/lilypads.png");
 }
+
+h1 {
+    font-size: 65px;
+}
+
+#main {
+    text-align: center;
+    float: right;
+}
+
+h2 {
+    font-size: 21px;
+}
+
+#start {
+    font-size: 21px;
+    color: red;
+}
+
+#end {
+    font-size: 21px;
+    color: red;
+}
+

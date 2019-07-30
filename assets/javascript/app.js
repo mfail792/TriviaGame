@@ -1,14 +1,11 @@
-//need questions and answers stored in variables/arrays
-//need right answer defined
-//BUGS: results page not loading on timer reaching zero
 
 
-//appending correct values to answers and corresponding questions
+//telling game to run start function on click and use values found in game()
 $('#start').on('click', function () {
     game.start();
 })
 
-//wrapping all questions and answers into one object
+//wrapping all questions and answers into 'questions' object
 var questions = [{
     question: "What year did the Twins last win the World Series?",
     guesses: ["1932", "1965", "1971", "1986", "1991"],
@@ -37,7 +34,7 @@ var questions = [{
 }];
 
 
-//declaring game object and counters for storing, timer value and answers to be displayed on timeout
+//displaying results page upon timer reaching zero using done() function;
 var game = {
     correct: 0,
     incorrect: 0,
@@ -47,25 +44,34 @@ var game = {
         $('#counter').html(game.counter);
         if (game.counter <= 0) {
             console.log("Time has expired");
-           game.done();
+            game.done();
         }
     },
 
-    //runs timer to countdown from 30 and display to page
+    //declaring a timer to countdown from 30 and display to page, removing start button, using for loops to go through all of the questions and appending them to appear on page
     start: function () {
         timer = setInterval(game.countdown, 1000);
         $('#main2').prepend('<h2>Time Remaining: <span id="counter">15</span> Seconds</h2>');
         $('#start').remove();
         for (var i = 0; i < questions.length; i++) {
             $('#main2').append('<h2>' + questions[i].question + '</h2>');
-
+            //assigning radio buttons to questions and appending them to page, storing values based on button chosen 
             for (var j = 0; j < questions[i].guesses.length; j++) {
                 $('#main2').append("<input type='radio' name='question-" + i + "' value='" + questions[i].guesses[j] + "'>" + questions[i].guesses[j]);
             }
         }
-        $('#main2').append('<button id="end">DONE</button>');
+
+
+        //done button; clears page and shows results
+        $('#main2').append('<br><br><button id="end">DONE</button>');
+        $('#end').on('click', function () {
+            game.done();
+            result();
+        })
+
+  
     },
-    //check chosen answer against rightAnswer and add to counter totals accordingly
+    //check chosen answers against 'rightAnswer' for corresponding question and store to counter totals
     done: function () {
         $.each($("input[name='question-0']:checked"), function () {
             if ($(this).val() == questions[0].rightAnswer) {
@@ -98,6 +104,7 @@ var game = {
             }
 
         });
+
         $.each($("input[name='question-3']:checked"), function () {
             if ($(this).val() == questions[3].rightAnswer) {
                 game.correct++;
@@ -108,7 +115,17 @@ var game = {
             }
 
         });
-        //making results page
+        $.each($("input[name='question-4']:checked"), function () {
+            if ($(this).val() == questions[4].rightAnswer) {
+                game.correct++;
+            }
+            else {
+                game.incorrect++;
+
+            }
+
+        });
+        //making results page to clear the timer and append stored values to page using <h3> tags
         this.result();
     },
 
@@ -123,6 +140,7 @@ var game = {
     }
 
 }
+
 
 
 
